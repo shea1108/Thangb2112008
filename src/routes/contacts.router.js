@@ -2,6 +2,8 @@ const express = require('express');
 const contactsController = require('../controllers/contacts.controller');
 const { methodNotAllowed } = require('../controllers/errors.controller');
 
+const avatarUpload = require('../middlewares/avatar-upload.middleware');
+
 const router = express.Router();
 
 module.exports.setup = (app) => {
@@ -24,8 +26,10 @@ module.exports.setup = (app) => {
  *         schema:
  *           type: string
  *         description: Filter by contact name
+ *       - $ref: '#/components/parameters/limitParam'
+ *       - $ref: '#/components/parameters/pageParam'
  *     tags:
- *       - contact
+ *       - contacts
  *     responses:
  *       200:
  *         description: A list of contacts
@@ -45,44 +49,12 @@ module.exports.setup = (app) => {
  *                       type: array
  *                       items:
  *                         $ref: '#/components/schemas/Contact'
- */
-  router.get('/', contactsController.getContactsByFilter);
-
-/**
- * @swagger
- * /api/v1/contacts:
- *   post:
- *     summary: Create a new contact
- *     description: Create a new contact
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             $ref: '#/components/schemas/Contact'
- *     tags:
- *       - contacts
- *     responses:
- *       201:
- *         description: A new contact
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   description: The response status
- *                   enum: [success]
- *                 data:
- *                   type: object
- *                   properties:
- *                     contact:
- *                       $ref: '#/components/schemas/Contact'
+ *                     metadata:
+ *                       $ref: '#/components/schemas/PaginationMetadata'
  */
 
 
-  router.post('/', contactsController.createContact);
+  router.post('/', avatarUpload, contactsController.createContact);
 
 
   /**
@@ -170,7 +142,7 @@ module.exports.setup = (app) => {
  *                       $ref: '#/components/schemas/Contact'
  */
 
-  router.put('/:id', contactsController.updateContact);
+  router.put('/:id', avatarUpload, contactsController.updateContact);
 
 /**
  * @swagger
