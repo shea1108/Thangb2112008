@@ -76,6 +76,48 @@ components:
                 default: null
                 description: The response data
 
+    Error400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The error message
+              code:
+                type: integer
+                description: The status code
+
+    Error404:
+      description: Resource Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The error message
+              code:
+                type: integer
+                description: The status code
+
+    Error500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: The error message
+              code:
+                type: integer
+                description: The status code
+
   parameters:
     contactIdParam:
       name: id
